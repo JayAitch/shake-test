@@ -23,7 +23,7 @@
         this.hasDeviceMotion = 'ondevicemotion' in window;
 		
         this.options = {
-            threshold: 15, //default velocity threshold for shake to register
+            threshold: 1, //default velocity threshold for shake to register
             timeout: 1000 //default interval between events
         };
 
@@ -84,6 +84,7 @@
 
     //calculates if shake did occur
     Shake.prototype.devicemotion = function (e) {
+		alert("kindashake")
         var current = e.accelerationIncludingGravity;
         var currentTime;
         var timeDifference;
