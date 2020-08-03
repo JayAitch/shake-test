@@ -21,7 +21,9 @@
     function Shake(options) {
         //feature detect
         this.hasDeviceMotion = 'ondevicemotion' in window;
+		this.hasDeviceMotion = this.hasDeviceMotion ? true : window.DeviceMotionEvent
 		
+		alert(this.hasDeviceMotion)
         this.options = {
             threshold: 1, //default velocity threshold for shake to register
             timeout: 1000 //default interval between events
@@ -68,7 +70,7 @@
     //start listening for devicemotion
     Shake.prototype.start = function () {
         this.reset();
-		//alert(this.hasDeviceMotion)
+		alert(this.hasDeviceMotion)
         if (this.hasDeviceMotion) {
             window.addEventListener('devicemotion', this, false);
         }
