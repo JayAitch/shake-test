@@ -23,8 +23,26 @@ body {
 
 <p>Shake your iPhone/iPad to see a custom action.</p>
 <p>Works on iOS +4.2.1, Android 4.0.3 (default browser), Opera Mobile (Android), BlackBerry PlayBook 2.0</p>
-
+<button onclick="requestPermissions()"></button>
 <script type="text/javascript">
+
+
+
+ function requestPermissions() {
+    // feature detect
+    if (typeof DeviceMotionEvent.requestPermission === 'function') {
+      DeviceMotionEvent.requestPermission()
+        .then(permissionState => {
+          if (permissionState === 'granted') {
+            window.addEventListener('devicemotion', () => {});
+          }
+        })
+        .catch(console.error);
+    } else {
+      // handle regular non iOS 13+ devices
+    }
+ }
+
 function handleMotionEvent(event) {
 
     var x = event.accelerationIncludingGravity.x;
