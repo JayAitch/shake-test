@@ -23,7 +23,7 @@
         this.hasDeviceMotion = 'ondevicemotion' in window;
 
         this.options = {
-            threshold: 1, //default velocity threshold for shake to register
+            threshold: 15, //default velocity threshold for shake to register
             timeout: 1000 //default interval between events
         };
 
@@ -83,7 +83,7 @@
 
     //calculates if shake did occur
     Shake.prototype.devicemotion = function (e) {
-		alert("skae")
+
         var current = e.accelerationIncludingGravity;
         var currentTime;
         var timeDifference;
@@ -101,7 +101,7 @@
         deltaX = Math.abs(this.lastX - current.x);
         deltaY = Math.abs(this.lastY - current.y);
         deltaZ = Math.abs(this.lastZ - current.z);
-
+alert(deltaX)
         if (((deltaX > this.options.threshold) && (deltaY > this.options.threshold)) || ((deltaX > this.options.threshold) && (deltaZ > this.options.threshold)) || ((deltaY > this.options.threshold) && (deltaZ > this.options.threshold))) {
             //calculate time in milliseconds since last shake registered
             currentTime = new Date();
