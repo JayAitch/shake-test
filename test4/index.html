@@ -42,18 +42,74 @@ body {
       // handle regular non iOS 13+ devices
     }
  }
-
-function handleMotionEvent(event) {
-
-    var x = event.accelerationIncludingGravity.x;
-    var y = event.accelerationIncludingGravity.y;
-    var z = event.accelerationIncludingGravity.z;
-	alert(x);
-    // Do something awesome.
+window.onload = function() {
+	init();
 }
 
-window.addEventListener("devicemotion", handleMotionEvent, true);
 
+function init() {
+        //onorientationchange doesn't always fire in a timely manner in Android so check for both orientationchange and resize
+        var supportsOrientationChange = "onorientationchange" in window,
+            orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+
+        window.addEventListener(orientationEvent, function () {
+          orientationChanged();
+        }, false);
+	}
+	  
+      function orientationChanged() {
+		alert("shake")
+      }
+	  
+	function shakeAmount(){
+	  if (window.DeviceMotionEvent) {
+          var threshhold = 20;
+
+          // Position variables
+          var xPreTotalAcc, yPreTotalAcc, zPreTotalAcc = 0;
+          var xPostTotalAcc, yPostTotalAcc, zPostTotalAcc = 0;
+
+          // The device motion event returns data about the rotation and acceleration information
+          // of the device. The event returns two properties: acceleration and accelerationIncldingGravity
+          on(window, "devicemotion", function (e) {
+            xPreTotalAcc = e.acceleration.x;
+            yPreTotalAcc = e.acceleration.y;
+            zPreTotalAcc = e.acceleration.z;
+          }, false);
+
+          // The setInterval() method calls a function or evaluates an expression at specified intervals (in milliseconds).
+          setInterval(function () {
+            var change = Math.abs(xPreTotalAcc - xPostTotalAcc + yPreTotalAcc - yPostTotalAcc + zPreTotalAcc - zPostTotalAcc);
+            if (change > threshhold) {
+              // reset the application's to its default state
+              resetApp();
+            }
+            // Update new position
+            xPostTotalAcc = xPreTotalAcc;
+            yPostTotalAcc = yPreTotalAcc;
+            zPostTotalAcc = zPreTotalAcc;
+          }, 150);
+        } else {
+          alert("DeviceMotion is currently not supported on this hardware.");
+        }
+	}  
+	  
+	  
+	function handleMotionEvent(event) {
+
+		var x = event.accelerationIncludingGravity.x;
+		var y = event.accelerationIncludingGravity.y;
+		var z = event.accelerationIncludingGravity.z;
+		alert(x);
+		// Do something awesome.
+	}
+
+      function resetApp() {
+        map.removeAllLayers();
+        map.destroy();
+        init();
+        clearInterval();
+      }
 </script>
 </body>
 </html>

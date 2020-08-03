@@ -68,7 +68,6 @@
     //start listening for devicemotion
     Shake.prototype.start = function () {
         this.reset();
-		alert(this.hasDeviceMotion)
         if (this.hasDeviceMotion) {
             window.addEventListener('devicemotion', this, false);
         }
@@ -84,6 +83,7 @@
 
     //calculates if shake did occur
     Shake.prototype.devicemotion = function (e) {
+		alert("skae")
         var current = e.accelerationIncludingGravity;
         var currentTime;
         var timeDifference;
