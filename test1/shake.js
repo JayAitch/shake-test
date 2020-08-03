@@ -70,14 +70,14 @@
         this.reset();
 		//alert(this.hasDeviceMotion)
         if (this.hasDeviceMotion) {
-            window.addEventListener('devicemotion', this.devicemotion, false);
+            window.addEventListener('devicemotion', this, false);
         }
     };
 
     //stop listening for devicemotion
     Shake.prototype.stop = function () {
         if (this.hasDeviceMotion) {
-            window.removeEventListener('devicemotion', this.devicemotion, false);
+            window.removeEventListener('devicemotion', this, false);
         }
         this.reset();
     };
