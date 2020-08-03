@@ -29,13 +29,25 @@ body {
 <script type="text/javascript">
 
 function requestPermissions(){
-	console.log("requesting")
+	if (typeof DeviceMotionEvent.requestPermission === 'function') {
+      DeviceMotionEvent.requestPermission()
+        .then(permissionState => {
+          if (permissionState === 'granted') {
+            window.addEventListener('devicemotion', () => {});
+          }
+        })
+        .catch(console.error);
+    } else {
+      // handle regular non iOS 13+ devices
+    }
 }
+
+
 window.onload = function() {
-	alert("loaded")
+	
     //create a new instance of shake.js.
     var myShakeEvent = new Shake({
-        threshold: 1
+        threshold: 5
     });
 
     // start listening to device motion
