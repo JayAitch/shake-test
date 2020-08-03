@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>Shake.js</title>
+<style type="text/css">
+body {
+    background: #E9E9E9;
+    color: #333;
+    font: 1em/1.3em "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif; /* 16px / 21px */
+    text-shadow: rgba(255,255,255,0.8) 0 1px 0;
+    text-align: center;
+}
+</style>
+<script type="text/javascript" src="shake.js"></script>
+</head>
+<body>
+
+<h1>Shake to Undo</h1>
+<h2>for your mobile web app</h2>
+
+<p>Shake your iPhone/iPad to see a custom action.</p>
+<p>Works on iOS +4.2.1, Android 4.0.3 (default browser), Opera Mobile (Android), BlackBerry PlayBook 2.0</p>
+
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', init, false);
+function init() {
+	console.log('Engage');
+	window.addEventListener('devicemotion', motion, false);
+}
+
+let lastX, lastY, lastZ;
+let moveCounter = 0;
+
+function motion(e) {
+	let acc = e.acceleration;
+	if(!acc.hasOwnProperty('x')) {
+		acc = e.accelerationIncludingGravity;
+	}
+
+	if(!acc.x) return;
+
+	//only log if x,y,z > 1
+	if(Math.abs(acc.x) >= 1 &&
+	Math.abs(acc.y) >= 1 &&
+	Math.abs(acc.z) >=1) {
+		//console.log('motion', acc);
+		if(!lastX) {
+			lastX = acc.x;
+			lastY = acc.y;
+			lastZ = acc.z;
+			return;
+		}
+
+		let deltaX = Math.abs(acc.x - lastX);
+		let deltaY = Math.abs(acc.y - lastY);
+		let deltaZ = Math.abs(acc.z - lastZ);
+		
+		if(deltaX + deltaY + deltaZ > 3) {
+			moveCounter++;
+		} else {
+			moveCounter = Math.max(0, --moveCounter);
+		}
+
+		if(moveCounter > 2) {
+			console.log('SHAKE!!!');
+			alert("shake")
+			moveCounter = 0;
+		}
+
+		lastX = acc.x;
+		lastY = acc.y;
+		lastZ = acc.z;
+		
+	}
+}
+
+</script>
+</body>
+</html>
